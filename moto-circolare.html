@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Calcolatore Moto Circolare</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: #333;
+    }
+
+    .wrapper {
+      max-width: 700px;
+      margin: 50px auto;
+      background-color: #ffffffcc;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    }
+
+    h1 {
+      text-align: center;
+      color: #1e3a8a;
+      margin-bottom: 30px;
+    }
+
+    h2, h3 {
+      color: #1e40af;
+      margin-top: 40px;
+    }
+
+    label {
+      display: block;
+      margin: 15px 0 5px;
+      font-weight: bold;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #93c5fd;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 20px;
+      background-color: #3b82f6;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s;
+    }
+
+    button:hover {
+      background-color: #2563eb;
+      transform: scale(1.03);
+    }
+
+    .result {
+      margin-top: 20px;
+      background-color: #eff6ff;
+      padding: 15px;
+      border-left: 5px solid #60a5fa;
+      border-radius: 10px;
+      font-family: monospace;
+    }
+
+    hr {
+      margin: 50px 0;
+      border: none;
+      border-top: 2px dashed #93c5fd;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <h1>Calcolatore Moto Circolare</h1>
+
+    <h2>1. Calcolo diretto (da raggio e periodo)</h2>
+    <label for="raggio">Raggio (m):</label>
+    <input type="number" id="raggio" step="any">
+
+    <label for="periodo">Periodo T (s):</label>
+    <input type="number" id="periodo" step="any">
+
+    <button onclick="calcola()">Calcola</button>
+    <div id="risultato" class="result"></div>
+
+    <hr>
+
+    <h2>2. Calcoli inversi</h2>
+
+    <h3>Calcola il Periodo (con raggio e velocità)</h3>
+    <label for="r2">Raggio (m):</label>
+    <input type="number" id="r2" step="any">
+
+    <label for="v2">Velocità (m/s):</label>
+    <input type="number" id="v2" step="any">
+
+    <button onclick="calcolaPeriodo()">Calcola Periodo</button>
+    <div id="risultatoPeriodo" class="result"></div>
+
+    <h3>Calcola il Raggio (con velocità e accelerazione)</h3>
+    <label for="v3">Velocità (m/s):</label>
+    <input type="number" id="v3" step="any">
+
+    <label for="a3">Accelerazione (m/s²):</label>
+    <input type="number" id="a3" step="any">
+
+    <button onclick="calcolaRaggio()">Calcola Raggio</button>
+    <div id="risultatoRaggio" class="result"></div>
+  </div>
+
+  <script>
+    function calcola() {
+      const r = parseFloat(document.getElementById("raggio").value);
+      const T = parseFloat(document.getElementById("periodo").value);
+      const risultatoDiv = document.getElementById("risultato");
+
+      if (isNaN(r) || isNaN(T) || T === 0) {
+        risultatoDiv.innerHTML = "⚠️ Inserisci valori validi (T ≠ 0).";
+        return;
+      }
+
+      const v = (2 * Math.PI * r) / T;
+      const a = (v * v) / r;
+
+      risultatoDiv.innerHTML = `
+        v = (2 × π × ${r}) / ${T} = <strong>${v.toFixed(2)} m/s</strong><br>
+        a = (${v.toFixed(2)}²) / ${r} = <strong>${a.toFixed(2)} m/s²</strong>
+      `;
+    }
+
+    function calcolaPeriodo() {
+      const r = parseFloat(document.getElementById("r2").value);
+      const v = parseFloat(document.getElementById("v2").value);
+      const out = document.getElementById("risultatoPeriodo");
+
+      if (isNaN(r) || isNaN(v) || v === 0) {
+        out.innerHTML = "⚠️ Inserisci valori validi (v ≠ 0).";
+        return;
+      }
+
+      const T = (2 * Math.PI * r) / v;
+      out.innerHTML = `T = (2 × π × ${r}) / ${v} = <strong>${T.toFixed(2)} s</strong>`;
+    }
+
+    function calcolaRaggio() {
+      const v = parseFloat(document.getElementById("v3").value);
+      const a = parseFloat(document.getElementById("a3").value);
+      const out = document.getElementById("risultatoRaggio");
+
+      if (isNaN(v) || isNaN(a) || a === 0) {
+        out.innerHTML = "⚠️ Inserisci valori validi (a ≠ 0).";
+        return;
+      }
+
+      const r = (v * v) / a;
+      out.innerHTML = `r = (${v}²) / ${a} = <strong>${r.toFixed(2)} m</strong>`;
+    }
+  </script>
+</body>
+</html>
